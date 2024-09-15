@@ -1,8 +1,8 @@
 import React, { useContext, useEffect, useState } from "react";
 import GameContext from "../../contexts/games/GameContext";
-import PaypalButton from "./PayPalButton";
+import PaypalButton from "./PaypalButton";
 
-export const GameList = () => {
+export const Games = () => {
   const [game, setGame] = useState({
     nombre: "",
     precio: "",
@@ -13,7 +13,7 @@ export const GameList = () => {
   const [error, setError] = useState(null);
 
   const ctx = useContext(GameContext);
-  const { games, createGame, getGames, updateGame, deleteGame } = ctx;
+  const { games, getGames, createGame, updateGame, deleteGame } = ctx;
 
   useEffect(() => {
     getGames();
@@ -104,7 +104,7 @@ export const GameList = () => {
         </button>
       </form>
       {error ? error : null}
-      <h1>Lista de Videojuegos</h1>
+      <h1>Videojuegos</h1>
       {games.map((game) => {
         return (
           <div key={game._id}>

@@ -10,4 +10,4 @@ const reducer = (globalState, action) => {
     }
 }
 
-export default reducer
+export default reducer;
