@@ -50,7 +50,7 @@ Este proyecto fue desarrollado como parte del Bootcamp de Fullstack para crear u
 ### Clonar el Repositorio
 
 ```bash
-git clone https://github.com/Kok3oficial/aplicacion-backend-autenticacion.git
+git clone https://github.com/Kok3oficial/https---github.com-Kok3oficial-api-game.git
 cd aplicacion-backend-autenticacion
 Instalación del Backend
 Instala las dependencias del servidor:
@@ -63,10 +63,10 @@ Crea un archivo .env con las siguientes variables:
 
 env
 Copiar código
-PORT=5000
-MONGO_URI=tu_mongo_uri_aqui
-JWT_SECRET=tu_secreto_jwt_aqui
-PAYPAL_CLIENT_ID=tu_paypal_client_id_aqui
+PORT=3001
+MONGO_URI=mongodb+srv://admin:<db_password>@dwfs-db.3caea.mongodb.net/?retryWrites=true&w=majority&appName=dwfs-db
+JWT_SECRET=UCLIENT
+
 Ejecuta el servidor:
 
 bash
