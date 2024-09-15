@@ -2,7 +2,6 @@
 import React, { useReducer } from 'react'
 import UserContext from './UserContext'
 import UserReducer from './UserReducer'
-
 import axiosClient from '../../config/axios'
 
 const UserState = (props) => {
@@ -14,9 +13,9 @@ const UserState = (props) => {
         },
         authStatus: false,
         loading: true
-    }
+    };
 
-    const [ globalState, dispatch ] = useReducer(UserReducer, initialState)
+    const [globalState, dispatch] = useReducer(UserReducer, initialState);
 
     const registerUser = async (dataForm) => {
 
@@ -30,75 +29,83 @@ const UserState = (props) => {
         } catch (error) {
             console.log(error)
         }
-    }
+    };
 
     const loginUser = async (dataForm) => {
 
         try {
             const respuesta = await axiosClient.post("/user/login", dataForm)
-            
-
+            localStorage.setItem('token', respuesta.data.token);
             dispatch({
                 type: "LOGIN_EXITOSO",
                 payload: respuesta.data
             })
 
         } catch (error) {
-            console.log(error)
+            console.log(error);
+            dispatch({
+                type: "REGISTRAR_ERRORES",
+                payload: true
+            })
         }
-    }
+    };
 
     const verifyingToken = async () => {
-
-        const token = localStorage.getItem('token')
-
-        if(token){
-            axiosClient.defaults.headers.common['authorization'] = `Bearer ${token}`
-
-        } else{
-            delete axiosClient.defaults.headers.common['authorization']
-        }
-
         try {
-
-            const respuesta = await axiosClient.get("/user/verifytoken")
-            console.log(respuesta);
-
-            dispatch({
-                type: "OBTENER_USUARIO",
-                payload: respuesta.data.usuario
-            })
-
+          const token = localStorage.getItem('token');
+          if (token) {
+            axiosClient.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+          } else {
+            delete axiosClient.defaults.headers.common['Authorization'];
+            throw new Error('No token available');
+          }
+    
+          const response = await axiosClient.get("/user/verifytoken");
+          if (!response.ok) {
+            throw new Error('No autorizado');
+          }
+    
+          const data = await response.data;
+          dispatch({
+            type: "OBTENER_USUARIO",
+            payload: data.usuario,
+          });
+    
         } catch (error) {
-            console.log(error)
+          console.error('Error al verificar el token:', error);
+          localStorage.removeItem('token');
+          dispatch({
+            type: "CERRAR_SESION",
+          });
         }
-    }
+      };
 
-    const logout = () => {
-        dispatch({
-            type: "CERRAR_SESION"
-        })
-    }
+const logout = () => {
 
-    return (
-        <UserContext.Provider value={{
+    localStorage.removeItem('token');
+    delete axiosClient.defaults.headers.common['Authorization'];
+    dispatch({
+        type: "CERRAR_SESION",
+    });
+};
+
+return (
+    <UserContext.Provider
+        value={{
             user: globalState.user,
             authStatus: globalState.authStatus,
             loading: globalState.loading,
+            errores: globalState.errores,
             registerUser,
             loginUser,
             verifyingToken,
-            logout
-        }}>
+            logout,
+        }}
+    >
+        {props.children}
+    </UserContext.Provider>
+);
+    };
 
-            {props.children}
-
-        </UserContext.Provider>
-    )
-
-
-}
-
-
-export default UserState
+export default UserState;
 

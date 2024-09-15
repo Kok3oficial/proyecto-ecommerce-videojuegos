@@ -1,124 +1,70 @@
-import React, { useContext, useEffect, useState } from "react";
-import GameContext from "../../contexts/games/GameContext";
+import React from 'react';
+import Card from '@mui/material/Card';
+import CardActions from '@mui/material/CardActions';
+import CardContent from '@mui/material/CardContent';
+import CardMedia from '@mui/material/CardMedia';
+import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
 import PaypalButton from "./PaypalButton";
+import Grid from '@mui/material/Grid2';
 
-export const Games = () => {
-  const [game, setGame] = useState({
-    nombre: "",
-    precio: "",
-  });
-
-  const [editMode, setEditMode] = useState(false);
-  const [id, setId] = useState(null);
-  const [error, setError] = useState(null);
-
-  const ctx = useContext(GameContext);
-  const { games, getGames, createGame, updateGame, deleteGame } = ctx;
-
-  useEffect(() => {
-    getGames();
-  }, []);
-
-  const handleChange = (event) => {
-    setGame({
-      ...game,
-      [event.target.name]: event.target.value,
-    });
-  };
-
-  const sendDataToCreateGame = (event) => {
-    event.preventDefault();
-    if (!game.nombre.trim() || !game.precio.trim()) {
-      return setError("Debes llenar todos los campos de texto");
-    }
-    createGame(game);
-    setError(null);
-  };
-
-  const sendDataToUpdateGame = (event) => {
-    event.preventDefault();
-    if (!game.nombre.trim() || !game.precio.toString().trim()) {
-      return setError("Debes llenar todos los campos de texto");
-    }
-
-    updateGame(id, game);
-    setId(null);
-
-    setGame({
-      nombre: "",
-      precio: "",
-    });
-
-    setEditMode(false);
-    setError(null);
-  };
-
-  const sendDataToDeleteGame = (element) => {
-    deleteGame(element._id);
-  };
-
-  const activateEditMode = (element) => {
-    setEditMode(true);
-    setId(element._id);
-    setGame({
-      nombre: element.nombre,
-      precio: element.precio,
-    });
-  };
-
+const Games = ({ games, activateEditMode, sendDataToDeleteGame }) => {
   return (
     <div>
-      {/* TÍTULO (DEPENDIENDO DEL MODO EN EL QUE ESTEMOS) */}
-      <h1>{editMode ? "Edita juego" : "Crea un juego"}</h1>
-      {/* NUESTRO FORMULARIO */}
-      <form
-        onSubmit={
-          editMode
-            ? (e) => {
-                sendDataToUpdateGame(e);
-              }
-            : (e) => {
-                sendDataToCreateGame(e);
-              }
-        }
-      >
-        <h2>Escribe el nombre del videojuego</h2>
-        <input
-          name="nombre"
-          onChange={(e) => {
-            handleChange(e);
-          }}
-          value={game.nombre}
-        />
-        <h2>Escribe el precio</h2>
-        <input
-          name="precio"
-          onChange={(e) => {
-            handleChange(e);
-          }}
-          value={game.precio}
-          type="number"
-        />
-        <button type="submit">
-          {editMode ? "Editar juego" : "Crear juego"}
-        </button>
-      </form>
-      {error ? error : null}
       <h1>Videojuegos</h1>
-      {games.map((game) => {
-        return (
-          <div key={game._id}>
-            <img src={game.imagen} height="200" width="200"/>
-            <h2>{game.nombre}</h2>
-            <p>Precio: ${game.precio}</p>
-            <PaypalButton valor={game.precio} />
-            {<button onClick={() => activateEditMode(game)}>Editar</button>}
-            <button onClick={() => sendDataToDeleteGame(game)}>
-              Borrar
-            </button>
-          </div>
-        );
-      })}
+      <Grid container spacing={3} sx={{ paddingLeft: 2, paddingRight: 2 }}>
+        {games.map((game) => (
+
+          <Grid item xs={12} sm={6} md={4} key={game._id}>
+            <Card
+              sx={{
+
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'space-between',
+                height: '100%',
+                maxWidth: 345,
+                margin: 'auto'
+              }}>
+              <CardMedia
+                sx={{ height: 140, 
+                  width: '100%',
+                  objectFit: 'cover' }}
+                image={game.imagen}
+                title={game.nombre}
+              />
+              <CardContent sx={{ flexGrow: 1 }}>
+                <Typography 
+                gutterBottom 
+                variant="h5" 
+                component="div"
+                sx={{ 
+                  overflow: 'hidden', 
+                  textOverflow: 'ellipsis', 
+                  whiteSpace: 'nowrap' 
+                }}
+                >
+                  {game.nombre}
+                </Typography>
+                <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                  Precio: ${game.precio}
+                </Typography>
+
+                 <CardActions sx={{ justifyContent: 'center', paddingBottom: 2  }}>
+                <PaypalButton valor={game.precio} />
+
+                {/* <Button size="small" onClick={() => activateEditMode(product)}>Editar</Button>
+            <Button size="small" onClick={() => sendDataToDeleteProduct(product)}>Borrar</Button> */}
+              </CardActions>
+              </CardContent>
+             
+              
+            </Card>
+          </Grid>
+        ))}
+      </Grid>
     </div>
   );
 };
+
+export default Games;

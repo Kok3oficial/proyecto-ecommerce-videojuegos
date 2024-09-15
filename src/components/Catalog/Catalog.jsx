@@ -1,14 +1,13 @@
-
+// src/components/Catalog/Catalog.js
 import React from 'react';
 import { Box, Typography, Button, Card, CardMedia, CardContent, CardActions } from '@mui/material';
 import { PayPalButtons } from '@paypal/react-paypal-js'; // Importa PayPal Buttons
-
 
 // Información del catálogo de videojuegos
 const games = [
   {
     name: "Hagane: The Final Conflict",
-    image: "https://http2.mlstatic.com/D_NQ_NP_952050-MLU74179489228_012024-O.webp",
+    image: "https://image-link-of-hagane.jpg",
     price: 300,
   },
   {
@@ -38,7 +37,7 @@ const games = [
   },
 ];
 
-const Index = () => {
+const Catalog = () => {
   const handleApprove = (orderID) => {
     console.log('Compra aprobada, ID de orden:', orderID);
   };
@@ -105,4 +104,4 @@ const Index = () => {
   );
 };
 
-export default Index;
+export default Catalog;

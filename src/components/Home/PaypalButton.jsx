@@ -7,7 +7,7 @@ export default class PaypalButton extends React.Component {
 			return actions.order
 				.create({
 					purchase_units: [{
-						description: 'Videojuego',
+						description: 'Juego',
 						amount: {
 							currency_code: 'USD',
 							value: this.props.valor,

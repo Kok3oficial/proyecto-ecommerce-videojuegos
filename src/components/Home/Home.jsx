@@ -1,6 +1,6 @@
-import React, { useContext, useEffect } from 'react'
-import GameContext from '../../contexts/games/GameContext'
-import  {Games}  from './GameList'
+import React, {useContext, useEffect} from 'react'
+import GameContext from '../../contexts/game/GameContext';
+import Games from './GameList';
 
 export const Home = () => {
 
@@ -13,8 +13,7 @@ export const Home = () => {
   return (
     <div>
       <div>
-      <p>Catalogo VideoJuegos Repro</p>
-        <Games
+        <Games 
           games={games} 
         />
       </div>

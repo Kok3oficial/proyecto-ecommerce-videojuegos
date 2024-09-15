@@ -15,7 +15,7 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
 
-const pages = ['Catalogo', 'Precios', 'Blog'];
+const pages = ['Catalogo'];
 const settingsAuth = ['Perfil', 'Cuenta', 'Cerrar Sesión'];
 const settingsNoAuth = ['Iniciar Sesión', 'Registro'];
 
@@ -48,7 +48,7 @@ export default function ResponsiveAppBar() {
   };
 
   return (
-    <AppBar position="static" sx={{ backgroundColor: 'purple' }}>
+    <AppBar position="static" sx={{ backgroundColor: 'indigo' }}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
@@ -67,6 +67,7 @@ export default function ResponsiveAppBar() {
               textDecoration: 'none',
             }}
           >
+            <img width="20%" src="https://i.pinimg.com/564x/48/c4/55/48c4558bd3f1ca5d4a66cecd739a65e5.jpg"></img>
             RproGms
           </Typography>
 
